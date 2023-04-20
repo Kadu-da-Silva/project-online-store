@@ -24,6 +24,7 @@ header {
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  width: 100%;
 }
 
 #input-query {
@@ -57,7 +58,7 @@ header {
   font-size: 11pt;
   margin: 5px;
   padding: 5px;
-  width: 400px;
+  width: 350px;
 }
 
 .categories-container label:hover {
