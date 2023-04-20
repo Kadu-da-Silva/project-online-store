@@ -88,7 +88,11 @@ class Products extends React.Component {
             type="text"
             placeholder="🔍 Digite o produto"
           />
-          <h3>Digite algum termo de pesquisa ou escolha uma categoria.</h3>
+          <h3
+            data-testid="home-initial-message"
+          >
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </h3>
           <Button />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
-import Products from './pages/Products';
+import Products from './pages/ListProducts';
 import Cart from './pages/Cart';
 
 class App extends React.Component {
