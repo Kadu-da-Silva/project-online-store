@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 class Button extends React.Component {
   render() {
     return (
-      <button>
+      <button className="button-container">
         <Link
           data-testid="shopping-cart-button"
           to="Cart"
         >
-          Carrinho de Compras
+          🛒 Carrinho
         </Link>
 
       </button>
