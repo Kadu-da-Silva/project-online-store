@@ -2,32 +2,17 @@ import React from 'react';
 import * as api from '../services/api';
 import Button from '../components/Button';
 
-// api.getCategories().then((categories) => { console.log(categories); });
-
-// api.getProductsFromCategoryAndQuery('acessórios').then((categories) => {
-//   console.log(categories);
-// });
-
-// api.getProductsFromCategoryAndQuery('MLB5672').then((categories) => {
-//   console.log(categories);
-// });
-
-const INDEX_NOT_FOUND = -1;
-
 class ListProducts extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       handleCategories: [],
-      selectedCategoryId: [],
+      // selectedCategory: null,
       resultQuery: [],
+      resultCategory: [],
       inputQuery: '',
     };
-
-    // this.handleInputCheckbox = this.handleInputCheckbox.bind(this);
-
-    // this.searchProducts = this.searchProducts.bind(this);
   }
 
   componentDidMount() {
@@ -41,28 +26,12 @@ class ListProducts extends React.Component {
     this.setState({ handleCategories: [...categories] });
   };
 
-  handleInputCheckbox({ target }) {
-    const { value } = target;
-    const { checked } = target;
-
-    this.setState((prevState) => {
-      const { selectedCategoryId } = prevState;
-
-      if (checked) {
-        return { selectedCategoryId: [...selectedCategoryId, value] };
-      }
-
-      const index = selectedCategoryId.indexOf(value);
-
-      if (index > INDEX_NOT_FOUND) {
-        const newSelectedCategoryId = [...selectedCategoryId];
-        newSelectedCategoryId.splice(index, 1);
-        return { selectedCategoryId: newSelectedCategoryId };
-      }
-
-      return null;
-    });
-  }
+  handleSelectCategory = async ({ target }) => {
+    const categoryId = target.value;
+    console.log(categoryId);
+    const result = await api.getProductsFromCategoryAndQuery(categoryId);
+    this.setState({ resultCategory: result.results });
+  };
 
   handleSearchBtn = async () => {
     const { inputQuery } = this.state;
@@ -77,56 +46,56 @@ class ListProducts extends React.Component {
     this.setState({ inputQuery: value });
   };
 
-  // searchProducts = async () => {
-  //   const { selectedCategoryId, inputQuery } = this.state;
-
-  //   let categories = [];
-
-  //   if (selectedCategoryId.length > 0) {
-  //     const promises = selectedCategoryId
-  //       .map((id) => api.getProductsFromCategoryAndQuery(id));
-
-  //     const results = await Promise.all(promises);
-
-  //     categories = results.reduce((acc, result) => acc.concat(result), []);
+  // renderProducts = async () => {
+  //   const { resultQuery, resultCategory } = this.state;
+  //   if (resultQuery.length > 0) {
+  //     resultQuery.map(({ id, title, thumbnail, price }) => (
+  //       <div key={ id } data-testid="product">
+  //         <img src={ thumbnail } alt={ title } />
+  //         <p>{ title }</p>
+  //         <p>{ price }</p>
+  //       </div>
+  //     ));
+  //   } else if (resultCategory.length > 0) {
+  //     resultCategory.map(({ id, title, thumbnail, price }) => (
+  //       <div key={ id } data-testid="product">
+  //         <img src={ thumbnail } alt={ title } />
+  //         <p>{ title }</p>
+  //         <p>{ price }</p>
+  //       </div>
+  //     ));
+  //   } else {
+  //     <p>Nenhum produto foi encontrado</p>;
   //   }
-
-  //   if (inputQuery) {
-  //     const result = await api.getProductsFromCategoryAndQuery(inputQuery);
-  //     categories = [...result];
-  //   }
-
-  //   this.setState({ categoriesSelected: categories });
-  //   console.log(categories);
   // };
 
   render() {
     const {
       handleCategories,
-      // selectedCategoryId,
+      // selectedCategory,
       resultQuery,
       inputQuery,
+      resultCategory,
     } = this.state;
-    console.log(resultQuery);
 
     return (
       <div className="container">
         <div className="categories-container">
           {handleCategories.map((category) => (
-            <label
-              key={ category.id }
-              data-testid="category"
-              htmlFor={ category.id }
-            >
-              <input
-                id={ category.id }
-                name={ category.id }
-                type="checkbox"
-                value={ category.id }
-                onChange={ this.handleInputCheckbox }
-              />
-              {category.name}
-            </label>
+            <div key={ category.id }>
+              <label htmlFor={ category.id }>
+                <input
+                  data-testid="category"
+                  id={ category.id }
+                  name="category"
+                  type="radio"
+                  value={ category.id }
+                  // checked={ resultCategory === category.id }
+                  onChange={ this.handleSelectCategory }
+                />
+                {category.name}
+              </label>
+            </div>
           ))}
         </div>
         <div className="query-container">
@@ -159,6 +128,7 @@ class ListProducts extends React.Component {
               <div>
                 {resultQuery.map(({ id, title, thumbnail, price }) => (
                   <div key={ id } data-testid="product">
+
                     <img src={ thumbnail } alt={ title } />
                     <p>{ title }</p>
                     <p>{ price }</p>
@@ -168,6 +138,16 @@ class ListProducts extends React.Component {
             ) : (
               <p>Nenhum produto foi encontrado</p>
             )}
+
+          <div>
+            {resultCategory.map(({ id, title, thumbnail, price }) => (
+              <div key={ id } data-testid="product">
+                <img src={ thumbnail } alt={ title } />
+                <p>{ title }</p>
+                <p>{ price }</p>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>
