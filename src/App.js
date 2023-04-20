@@ -3,6 +3,7 @@ import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import * as api from './services/api';
 import Products from './pages/Products';
+import Cart from './pages/Cart';
 
 api.getCategories().then((categories) => { console.log(categories); });
 
@@ -21,7 +22,9 @@ class App extends React.Component {
         <h1>Online Store</h1>
         <Switch>
           <Route exact path="/" component={ Products } />
+          <Route exact path="/cart" component={ Cart } />
         </Switch>
+
       </div>
     );
   }
