@@ -12,6 +12,7 @@ class ListProducts extends React.Component {
       resultQuery: [],
       resultCategory: [],
       inputQuery: '',
+      // product:'',
     };
   }
 
