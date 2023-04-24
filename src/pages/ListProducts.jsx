@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as api from '../services/api';
 import Button from '../components/Button';
 
@@ -36,8 +37,11 @@ class ListProducts extends React.Component {
   handleSearchBtn = async () => {
     const { inputQuery } = this.state;
 
-    const result = await api.getProductQuery(inputQuery);
-    this.setState({ resultQuery: result.results });
+    const result = await api.getProductsFromCategoryAndQuery('', inputQuery);
+    this.setState({
+      resultQuery: result.results,
+      inputQuery: '',
+    });
   };
 
   handleInputQuery = async ({ target }) => {
@@ -45,29 +49,6 @@ class ListProducts extends React.Component {
 
     this.setState({ inputQuery: value });
   };
-
-  // renderProducts = async () => {
-  //   const { resultQuery, resultCategory } = this.state;
-  //   if (resultQuery.length > 0) {
-  //     resultQuery.map(({ id, title, thumbnail, price }) => (
-  //       <div key={ id } data-testid="product">
-  //         <img src={ thumbnail } alt={ title } />
-  //         <p>{ title }</p>
-  //         <p>{ price }</p>
-  //       </div>
-  //     ));
-  //   } else if (resultCategory.length > 0) {
-  //     resultCategory.map(({ id, title, thumbnail, price }) => (
-  //       <div key={ id } data-testid="product">
-  //         <img src={ thumbnail } alt={ title } />
-  //         <p>{ title }</p>
-  //         <p>{ price }</p>
-  //       </div>
-  //     ));
-  //   } else {
-  //     <p>Nenhum produto foi encontrado</p>;
-  //   }
-  // };
 
   render() {
     const {
@@ -132,6 +113,12 @@ class ListProducts extends React.Component {
                     <img src={ thumbnail } alt={ title } />
                     <p>{ title }</p>
                     <p>{ price }</p>
+                    <Link
+                      data-testid="product-detail-link"
+                      to={ `product/${id}` }
+                    >
+                      View Details
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -145,6 +132,13 @@ class ListProducts extends React.Component {
                 <img src={ thumbnail } alt={ title } />
                 <p>{ title }</p>
                 <p>{ price }</p>
+                <Link
+                  data-testid="product-detail-link"
+                  to={ `product/${id}` }
+
+                >
+                  View Details
+                </Link>
               </div>
             ))}
           </div>
@@ -154,5 +148,6 @@ class ListProducts extends React.Component {
     );
   }
 }
-
+// oi
+// oi
 export default ListProducts;
