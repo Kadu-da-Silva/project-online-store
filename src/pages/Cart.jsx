@@ -4,7 +4,7 @@ import { getItem } from '../services/localStorageFuncs';
 class Cart extends React.Component {
   state = {
     products: getItem('products') || '',
-    // counter: getItem('counter'),
+    counter: 1,
   };
 
   render() {
@@ -19,7 +19,7 @@ class Cart extends React.Component {
                 <div key={ element.id }>
                   <h2 data-testid="shopping-cart-product-name">{ element.title }</h2>
                   <img src={ element.thumbnail } alt={ element.title } />
-                  <p>{counter}</p>
+                  <p data-testid="shopping-cart-product-quantity">{counter}</p>
                   <p>{ element.price }</p>
                 </div>
               ))}
