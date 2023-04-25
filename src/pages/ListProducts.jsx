@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as api from '../services/api';
 import Button from '../components/Button';
+import { setItem } from '../services/localStorageFuncs';
 
 // api.getProductsFromCategoryAndQuery('MLB1430', '').then((categories) => { console.log(categories); });
 
@@ -14,6 +15,7 @@ class ListProducts extends React.Component {
       inputQuery: '',
       resultSearch: [],
       isSearchCompleted: false,
+      cart: [],
     };
   }
 
@@ -55,6 +57,17 @@ class ListProducts extends React.Component {
       // inputQuery: '',
       // inputRadio: '',
     });
+  };
+
+  addProductCart = (product) => {
+    console.log(product);
+    const { cart } = this.state;
+
+    this.setState({
+      cart: [...cart, product],
+    });
+
+    setItem('products', [...cart, product]);
   };
 
   render() {
@@ -116,9 +129,9 @@ class ListProducts extends React.Component {
               <h3 data-testid="home-initial-message">
                 Digite algum termo de pesquisa ou escolha uma categoria.
               </h3>
-              <Button />
             </div>
           )}
+          <Button />
 
           {/* //! Quando a busca não retorna nada */}
           {isSearchCompleted && !resultSearch.length && (
@@ -141,6 +154,13 @@ class ListProducts extends React.Component {
                   <p>{ title }</p>
                   <p>{ `R$ ${price}` }</p>
                 </Link>
+                <button
+                  className="btn-primary"
+                  onClick={ () => this.addProductCart({ id, title, thumbnail, price }) }
+                  data-testid="product-add-to-cart"
+                >
+                  🛒
+                </button>
               </div>
             ))}
           </div>
