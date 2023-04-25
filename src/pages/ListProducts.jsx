@@ -105,7 +105,7 @@ class ListProducts extends React.Component {
           <button
             data-testid="query-button"
             onClick={ this.searchProducts }
-            className='btn-primary'
+            className="btn-primary"
           >
             Pesquisar
           </button>
@@ -131,7 +131,7 @@ class ListProducts extends React.Component {
               <div
                 key={ id }
                 data-testid="product"
-                className='container-product'
+                className="container-product"
               >
                 <Link
                   data-testid="product-detail-link"
