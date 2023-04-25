@@ -14,6 +14,7 @@ class ListProducts extends React.Component {
       inputQuery: '',
       resultSearch: [],
       isSearchCompleted: false,
+      cart: [],
     };
   }
 
@@ -57,12 +58,21 @@ class ListProducts extends React.Component {
     });
   };
 
+  addProductCart = (product) => {
+    console.log(product);
+
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, product],
+    }));
+  };
+
   render() {
     const {
       handleCategories,
       inputQuery,
       resultSearch,
       isSearchCompleted,
+      cart,
     } = this.state;
 
     // console.log(resultSearch);
@@ -141,6 +151,13 @@ class ListProducts extends React.Component {
                   <p>{ title }</p>
                   <p>{ `R$ ${price}` }</p>
                 </Link>
+                <button
+                  className="btn-primary"
+                  onClick={ () => this.addProductCart({ id, title, thumbnail, price }) }
+                  data-testid="product-add-to-cart"
+                >
+                  🛒
+                </button>
               </div>
             ))}
           </div>
