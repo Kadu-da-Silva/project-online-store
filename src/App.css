@@ -8,6 +8,11 @@ body {
   margin: 0;
 }
 
+p {
+  font-size: calc(2pt + 2vmin);
+  margin: 0;
+}
+
 header {
   background-color: rgba(255, 255, 255, 0.1);
   border: 0;
@@ -39,7 +44,7 @@ header {
   border: 1px solid aqua;
   border-radius: 10px;
   color: #282c34;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(4px + 2vmin);
 }
 
 .button-container, a {
@@ -69,4 +74,31 @@ header {
 
 .categories-container input {
   margin: 5px;
+}
+
+.container-product {
+  border: 1px solid aqua;
+  border-radius: 10px;
+  box-shadow: 0 0 5px aqua;
+  margin: 10px;
+  padding: 5px;
+}
+
+.container-product a {
+  color: white;
+}
+
+.btn-primary {
+  background-color: #282c34;
+  border: 1px solid aqua;
+  border-radius: 3px;
+  color: white;
+  font-size: calc(4px + 2vmin);
+  padding: 3px;
+}
+
+.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  cursor: pointer;
 }
