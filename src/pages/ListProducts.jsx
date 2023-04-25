@@ -76,6 +76,7 @@ class ListProducts extends React.Component {
       inputQuery,
       resultSearch,
       isSearchCompleted,
+
     } = this.state;
 
     // console.log(resultSearch);
