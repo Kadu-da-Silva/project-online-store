@@ -7,7 +7,7 @@ class Button extends React.Component {
       <button className="button-container">
         <Link
           data-testid="shopping-cart-button"
-          to="Cart"
+          to="/cart"
         >
           🛒 Carrinho
         </Link>
