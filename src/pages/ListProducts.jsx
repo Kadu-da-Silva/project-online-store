@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as api from '../services/api';
 import Button from '../components/Button';
+import { setItem } from '../services/localStorageFuncs';
 
 // api.getProductsFromCategoryAndQuery('MLB1430', '').then((categories) => { console.log(categories); });
 
@@ -60,10 +61,13 @@ class ListProducts extends React.Component {
 
   addProductCart = (product) => {
     console.log(product);
+    const { cart } = this.state;
 
-    this.setState((prevState) => ({
-      cart: [...prevState.cart, product],
-    }));
+    this.setState({
+      cart: [...cart, product],
+    });
+
+    setItem('products', [...cart, product]);
   };
 
   render() {
@@ -126,9 +130,9 @@ class ListProducts extends React.Component {
               <h3 data-testid="home-initial-message">
                 Digite algum termo de pesquisa ou escolha uma categoria.
               </h3>
-              <Button />
             </div>
           )}
+          <Button />
 
           {/* //! Quando a busca não retorna nada */}
           {isSearchCompleted && !resultSearch.length && (
