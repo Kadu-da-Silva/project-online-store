@@ -25,7 +25,7 @@ class Cart extends React.Component {
               ))}
             </div>
           ) : (
-            <p>Carrinho vazio</p>
+            <p>Seu carrinho está vazio</p>
           )}
       </div>
 
