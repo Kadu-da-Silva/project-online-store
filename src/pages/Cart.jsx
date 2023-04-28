@@ -1,26 +1,178 @@
 import React from 'react';
-import { getItem } from '../services/localStorageFuncs';
+import { Link } from 'react-router-dom';
+import { setItem, getItem } from '../services/localStorageFuncs';
 
 class Cart extends React.Component {
   state = {
-    products: getItem('products') || '',
-    counter: 1,
+    products: getItem('products') || [],
+  };
+
+  componentDidMount() {
+    const newProduct = this.productCounter();
+    this.setState({
+      products: newProduct,
+    });
+  }
+
+  // countProduct = (elementId) => {
+  //   const product = getItem('products');
+  //   // const findElement = product.map(({ id }) => id);
+  //   // console.log(product);
+  //   let counter = 0;
+  //   product.forEach(({ id }) => {
+  //     if (id === elementId) {
+  //       counter += 1;
+  //     }
+  //   });
+  //   return counter;
+  // };
+
+  // countProductAlternative = () => {
+  //   const { products } = this.state;
+  //   const findElement = products.map(({ id }) => id);
+
+  //   const objCount = {};
+
+  //   findElement.forEach((val) => {
+  //     objCount[val] = (objCount[val] || 0) + 1;
+  //   });
+  //   this.setState({
+  //     counterObj: osbjCount,
+  //   });
+  // };
+  // increaseAmount = () => {
+
+  // }
+
+  productCounter = () => {
+    const products = getItem('products') || [];
+    const repeatedIds = {};
+
+    products.forEach((e) => {
+      if (repeatedIds[e.id]) {
+        repeatedIds[e.id] += 1;
+      } else {
+        repeatedIds[e.id] = 1;
+      }
+    });
+    products.forEach((e) => {
+      e.quantity = repeatedIds[e.id];
+    });
+
+    setItem('products', products);
+    this.setState({
+      products,
+    });
+    return products;
+  };
+
+  handleIncreaseButton = (productId) => {
+    this.setState((prevState) => {
+      const products = [...prevState.products];
+      const filterProducts = products.filter(({ id }) => id === productId);
+      filterProducts[0].quantity += 1;
+      const newProducts = [filterProducts[0], ...products];
+      return { products: newProducts };
+    }, () => {
+      const { products } = this.state;
+      setItem('products', products);
+    });
+  };
+
+  // handleDecreaseButton = (productId) => {
+  //   this.setState((prevState) => {
+  //     const products = [...prevState.products];
+  //     const filterProducts = products.filter(({ id }) => id === productId);
+  //     filterProducts[0].quantity -= 1;
+  //     const newProducts = products.filter(({ id }) => id !== productId);
+  //     if (filterProducts[0].quantity > 0) {
+  //       newProducts.push(filterProducts[0]);
+  //     }
+  //     return { products: newProducts };
+  //   }, () => {
+  //     const { products } = this.state;
+  //     setItem('products', products);
+  //   });
+  // };
+
+  handleDecreaseButton = (productId) => {
+    this.setState((prevState) => {
+      const products = [...prevState.products];
+      const filteredProducts = products.filter(({ id }) => id === productId);
+      filteredProducts[0].quantity -= 1;
+      const newProducts = products.filter(({ id }) => id !== productId);
+      if (filteredProducts[0].quantity > 0) {
+        const ultimoIndice = -1;
+        const filteredProductsExceptLast = filteredProducts.slice(0, ultimoIndice);
+        newProducts.push(...filteredProductsExceptLast);
+      }
+      return { products: newProducts };
+    }, () => {
+      const { products } = this.state;
+      setItem('products', products);
+    });
+  };
+
+  handleRemoveButton = (productId) => {
+    this.setState((prevState) => {
+      const products = [...prevState.products];
+      const filteredProducts = products.filter(({ id }) => id !== productId);
+      return { products: filteredProducts };
+    }, () => {
+      const { products } = this.state;
+      setItem('products', products);
+    });
+  };
+
+  uniqueProduct = () => {
+    const { products } = this.state;
+    const uniqueProducts = [];
+    const displayedIds = [];
+    products.forEach((element) => {
+      if (!displayedIds.includes(element.id)) {
+        uniqueProducts.push(element);
+        displayedIds.push(element.id);
+      }
+    });
+    return uniqueProducts;
   };
 
   render() {
-    const { products, counter } = this.state;
-    console.log(products);
+    const uniqueProducts = this.uniqueProduct();
+
     return (
       <div data-testid="shopping-cart-empty-message">
-        {products.length > 0
+        <button><Link to="/">Voltar</Link></button>
+        {uniqueProducts.length > 0
           ? (
             <div>
-              {products.map((element) => (
-                <div key={ element.id }>
-                  <h2 data-testid="shopping-cart-product-name">{ element.title }</h2>
+              {uniqueProducts.map((element, index) => (
+                <div key={ index }>
+                  <h4 data-testid="shopping-cart-product-name">{ element.title }</h4>
                   <img src={ element.thumbnail } alt={ element.title } />
-                  <p data-testid="shopping-cart-product-quantity">{counter}</p>
                   <p>{ element.price }</p>
+                  <button
+                    data-testid="product-decrease-quantity"
+                    onClick={ () => this.handleDecreaseButton(element.id) }
+                  >
+                    -
+                  </button>
+                  <p data-testid="shopping-cart-product-quantity">
+                    { String(element.quantity) }
+                  </p>
+                  <button
+                    data-testid="product-increase-quantity"
+                    onClick={ () => this.handleIncreaseButton(element.id) }
+                  >
+                    +
+                  </button>
+                  <button
+                    data-testid="remove-product"
+                    onClick={ () => this.handleRemoveButton(element.id) }
+                  >
+                    Excluir
+
+                  </button>
                 </div>
               ))}
             </div>
