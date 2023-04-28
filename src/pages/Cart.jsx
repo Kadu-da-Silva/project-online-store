@@ -14,6 +14,7 @@ class Cart extends React.Component {
     });
   }
 
+  // teste
   productCounter = () => {
     const products = getItem('products') || [];
     const repeatedIds = {};
