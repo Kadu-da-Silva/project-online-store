@@ -14,36 +14,6 @@ class Cart extends React.Component {
     });
   }
 
-  // countProduct = (elementId) => {
-  //   const product = getItem('products');
-  //   // const findElement = product.map(({ id }) => id);
-  //   // console.log(product);
-  //   let counter = 0;
-  //   product.forEach(({ id }) => {
-  //     if (id === elementId) {
-  //       counter += 1;
-  //     }
-  //   });
-  //   return counter;
-  // };
-
-  // countProductAlternative = () => {
-  //   const { products } = this.state;
-  //   const findElement = products.map(({ id }) => id);
-
-  //   const objCount = {};
-
-  //   findElement.forEach((val) => {
-  //     objCount[val] = (objCount[val] || 0) + 1;
-  //   });
-  //   this.setState({
-  //     counterObj: osbjCount,
-  //   });
-  // };
-  // increaseAmount = () => {
-
-  // }
-
   productCounter = () => {
     const products = getItem('products') || [];
     const repeatedIds = {};
@@ -78,22 +48,6 @@ class Cart extends React.Component {
       setItem('products', products);
     });
   };
-
-  // handleDecreaseButton = (productId) => {
-  //   this.setState((prevState) => {
-  //     const products = [...prevState.products];
-  //     const filterProducts = products.filter(({ id }) => id === productId);
-  //     filterProducts[0].quantity -= 1;
-  //     const newProducts = products.filter(({ id }) => id !== productId);
-  //     if (filterProducts[0].quantity > 0) {
-  //       newProducts.push(filterProducts[0]);
-  //     }
-  //     return { products: newProducts };
-  //   }, () => {
-  //     const { products } = this.state;
-  //     setItem('products', products);
-  //   });
-  // };
 
   handleDecreaseButton = (productId) => {
     this.setState((prevState) => {
