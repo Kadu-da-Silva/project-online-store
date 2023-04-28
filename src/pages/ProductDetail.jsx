@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getProductById } from '../services/api';
 import Button from '../components/Button';
-import { setItem } from '../services/localStorageFuncs';
+import { setItem, getItem } from '../services/localStorageFuncs';
 
 class ProductDetails extends React.Component {
   constructor(props) {
@@ -18,7 +18,9 @@ class ProductDetails extends React.Component {
     const { match: { params: { id } } } = this.props;
 
     const result = await getProductById(id);
-
+    this.setState({
+      cart: getItem('products') || [],
+    });
     this.setState({ product: result });
   }
 
@@ -35,25 +37,29 @@ class ProductDetails extends React.Component {
 
   render() {
     const { product } = this.state;
-    console.log(product);
+    const { id, title, thumbnail, price, content } = product;
+    // console.log(product);
 
     return (
       <div>
-        <div key={ product.id }>
-          <h3 data-testid="product-detail-name">{ product.title }</h3>
-          <img data-testid="product-detail-image" src={ product.thumbnail } alt="" />
-          <h4 data-testid="product-detail-price">{`R$ ${product.price} `}</h4>
-          <p>{ product.content }</p>
+        <div>
+          <div key={ id }>
+            <h3 data-testid="product-detail-name">{ title }</h3>
+            <img data-testid="product-detail-image" src={ thumbnail } alt="" />
+            <h4 data-testid="product-detail-price">{`R$ ${price} `}</h4>
+            <p>{ content}</p>
+          </div>
+
+          <Button />
+
+          <button
+            data-testid="product-detail-add-to-cart"
+            onClick={ () => this.addProductCart({
+              id, title, thumbnail, price, content, quantity: '0' }) }
+          >
+            Adicionar ao Carrinho
+          </button>
         </div>
-
-        <Button />
-
-        <button
-          data-testid="product-detail-add-to-cart"
-          onClick={ () => this.addProductCart(product) }
-        >
-          Adicionar ao Carrinho
-        </button>
       </div>
     );
   }

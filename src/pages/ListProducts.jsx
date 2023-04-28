@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as api from '../services/api';
 import Button from '../components/Button';
-import { setItem } from '../services/localStorageFuncs';
+import { setItem, getItem } from '../services/localStorageFuncs';
 
 // api.getProductsFromCategoryAndQuery('MLB1430', '').then((categories) => { console.log(categories); });
 
@@ -21,6 +21,9 @@ class ListProducts extends React.Component {
 
   componentDidMount() {
     this.handleFetchCategory();
+    this.setState({
+      cart: getItem('products') || [],
+    });
     // this.searchProducts();
   }
 
@@ -49,7 +52,7 @@ class ListProducts extends React.Component {
   searchProducts = async () => {
     const { inputQuery } = this.state;
     const result = await api.getProductsFromCategoryAndQuery('', inputQuery);
-    console.log(result);
+    // console.log(result);
 
     this.setState({
       resultSearch: result.results,
@@ -60,8 +63,9 @@ class ListProducts extends React.Component {
   };
 
   addProductCart = (product) => {
-    console.log(product);
+    // console.log(product);
     const { cart } = this.state;
+    console.log(cart);
 
     this.setState({
       cart: [...cart, product],
@@ -157,7 +161,8 @@ class ListProducts extends React.Component {
                 </Link>
                 <button
                   className="btn-primary"
-                  onClick={ () => this.addProductCart({ id, title, thumbnail, price }) }
+                  onClick={ () => this.addProductCart({
+                    id, title, thumbnail, price, quantity: '0' }) }
                   data-testid="product-add-to-cart"
                 >
                   🛒

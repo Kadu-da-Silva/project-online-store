@@ -102,3 +102,12 @@ header {
   border: 2px solid white;
   cursor: pointer;
 }
+
+.product-evaluation-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  padding: 25px;
+  width: 100%;
+}
